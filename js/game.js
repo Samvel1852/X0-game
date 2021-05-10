@@ -220,6 +220,8 @@ function arrayConstructor(size) {
   return arrForAll;
 }
 
+//function for all lengths
+
 // console.log(arrayConstructor(6));
 // console.log(Math.floor(Math.random() * arrForAll.length - 1));
 
