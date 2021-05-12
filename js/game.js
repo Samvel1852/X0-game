@@ -99,6 +99,8 @@
 //   }
 // }
 
+//******************
+
 // let arrForAll = [
 //   [null, "0", null, null, null, null],
 //   [null, "0", null, null, null, null],
@@ -126,9 +128,44 @@
 //   ["0", "0", null, null, null, null],
 // ];
 
+// let arrForAll = [
+//   ["X", "X", "X", "X", "X", "0"],
+//   ["X", "0", "X", "X", "0", "X"],
+//   ["X", "0", "X", "0", "X", "X"],
+//   ["X", "0", "0", "X", "X", "X"],
+//   ["X", "0", "X", "X", "X", "X"],
+//   ["0", "0", "X", "X", "X", "X"],
+// ];
+
 let arrForAll = [];
 
+// let arrForAll = [
+//   ["0", "X", "X", "0", "0", "X"],
+//   ["X", "0", null, "0", "X", "0"],
+//   ["X", "0", "X", "X", "X", "0"],
+//   ["X", "X", "X", "0", "0", "X"],
+//   ["X", "X", "0", "0", null, "0"],
+//   ["X", "0", "X", "X", null, "0"],
+// ];
+
+function arrayConstructor(size) {
+  for (let i = 0; i < size; i += 1) {
+    let tempArr = [];
+    for (let j = 0; j < size; j += 1) {
+      tempArr.push(null);
+    }
+    arrForAll.push(tempArr);
+  }
+  return arrForAll;
+}
+
+arrayConstructor(6);
+console.log(checkStatusForAll(arrForAll), "checks");
+
+// console.log(arrForAll);
+
 function checkStatusForAll(array) {
+  // console.log(array, "##");
   for (let i = 0; i < array.length; i += 1) {
     if (array[i].every((elm) => elm === "X")) {
       return "X won";
@@ -138,40 +175,53 @@ function checkStatusForAll(array) {
       return "X won";
     } else if (array.every((each) => each[i] === "0")) {
       return "0 won";
-    } else if (array.some((each) => each[i] !== null)) {
-      return "draw";
     }
   }
+
+  let countDraw = 0;
+
+  for (let i = 0; i < array.length; i += 1) {
+    if (array[i].every((elm) => elm !== null)) {
+      countDraw += 1;
+    }
+    if (countDraw === array.length) {
+      return "draw";
+    } else {
+      continue;
+    }
+  }
+
   let countX = 0;
   let countY = 0;
+
   for (let i = 0; i < array.length; i += 1) {
     if (array[i][i] === "X") {
       countX += 1;
       if (countX === array.length) {
         return "X won";
       }
-      continue;
     } else if (array[i][i] === "0") {
       countY += 1;
       if (countY === array.length) {
         return "0 won";
       }
-      continue;
     }
   }
+
+  let countRevX = 0;
+  let countRevY = 0;
+
   for (let i = 0; i < array.length; i += 1) {
     if (array[i][array.length - 1 - i] === "X") {
-      countX += 1;
-      if (countX === array.length) {
+      countRevX += 1;
+      if (countRevX === array.length) {
         return "X won";
       }
-      continue;
     } else if (array[i][array.length - 1 - i] === "0") {
-      countY += 1;
-      if (countY === array.length) {
+      countRevY += 1;
+      if (countRevY === array.length) {
         return "0 won";
       }
-      continue;
     }
   }
   return false;
@@ -186,7 +236,7 @@ function runTicTacToeForAll(index1, index2) {
     // console.log(arrForAll);
     return checkStatusForAll(arrForAll);
   }
-  if (arrForAll[index1][index2] === null && index1 < 3 && index2 < 3) {
+  if (arrForAll[index1][index2] === null) {
     if (player) {
       arrForAll[index1][index2] = player1;
       player = false;
@@ -209,31 +259,17 @@ function runTicTacToeForAll(index1, index2) {
   }
 }
 
-function arrayConstructor(size) {
-  for (let i = 0; i < size; i += 1) {
-    let tempArr = [];
-    for (let j = 0; j < size; j += 1) {
-      tempArr.push(null);
-    }
-    arrForAll.push(tempArr);
-  }
-  return arrForAll;
-}
-
 //function for all lengths
+console.log(checkStatusForAll(arrForAll), "checks");
 
-// console.log(arrayConstructor(6));
-// console.log(Math.floor(Math.random() * arrForAll.length - 1));
-
-// while (!checkStatusForAll(arrForAll)) {
-//   console.log(
-//     runTicTacToeForAll(
-//       Math.floor(Math.random() * arrayConstructor(6).length - 1),
-//       Math.floor(Math.random() * arrayConstructor(6).length - 1)
-//     )
-//   );
-//   console.log(arrForAll);
-// }
+while (checkStatusForAll(arrForAll) === false) {
+  runTicTacToeForAll(
+    Math.floor(Math.random() * arrForAll.length),
+    Math.floor(Math.random() * arrForAll.length)
+  );
+}
+console.log(checkStatusForAll(arrForAll));
+console.log(arrForAll);
 
 // console.log(checkStatusForAll(arrayConstructor(6)));
 // console.log(runTicTacToeForAll(arrForAll));
